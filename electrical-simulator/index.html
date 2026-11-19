@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Electrical Control & PLC Simulator</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header id="toolbar">
+  <div class="brand">⚡ <b>ElectroSim</b> <span>Control Wiring + PLC</span></div>
+  <div class="tgroup">
+    <button id="btnNew" title="New drawing">🗋 New</button>
+    <button id="btnOpen" title="Open saved circuit">📂 Open</button>
+    <button id="btnSave" title="Save circuit (Ctrl+S)">💾 Save</button>
+    <select id="selExamples" title="Load a ready-made example"></select>
+  </div>
+  <div class="tgroup">
+    <button id="btnSelect" title="Select / move (V)">⬚ Select</button>
+    <button id="btnWire" title="Draw wire (W)">〰 Wire</button>
+    <button id="btnRotate" title="Rotate (R)">⟳</button>
+    <button id="btnDelete" title="Delete (Del)">🗑</button>
+    <button id="btnUndo" title="Undo (Ctrl+Z)">↶</button>
+    <button id="btnRedo" title="Redo (Ctrl+Y)">↷</button>
+  </div>
+  <div class="tgroup">
+    <button id="btnZout" title="Zoom out">−</button>
+    <button id="btnFit" title="Fit to screen (F)">⤢</button>
+    <button id="btnZin" title="Zoom in">+</button>
+  </div>
+  <div class="tgroup sim">
+    <button id="btnRun" class="run" title="Run / stop simulation (Space)">▶ Run</button>
+    <button id="btnRestart" title="Restart simulation">⟲</button>
+    <label class="spd" title="Simulation speed">Speed
+      <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="5">5×</option></select>
+    </label>
+  </div>
+  <div class="tgroup">
+    <button id="btnLadder" title="Show / hide the PLC ladder editor">🪜 PLC Ladder</button>
+    <button id="btnPng" title="Export drawing as PNG (for thumbnails / videos)">🖼 PNG</button>
+    <button id="btnSvg" title="Export drawing as SVG">SVG</button>
+  </div>
+</header>
+
+<main id="main">
+  <aside id="palette"></aside>
+  <section id="center">
+    <div id="canvasWrap">
+      <svg id="canvas">
+        <defs>
+          <pattern id="gridPat" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="0" cy="0" r="1" fill="#c5ced6"/>
+            <circle cx="20" cy="0" r="1" fill="#c5ced6"/>
+            <circle cx="0" cy="20" r="1" fill="#c5ced6"/>
+            <circle cx="20" cy="20" r="1" fill="#c5ced6"/>
+          </pattern>
+        </defs>
+        <g id="world"></g>
+      </svg>
+      <div id="runBanner">▶ SIMULATION RUNNING — click / hold buttons & switches · press Space or ■ Stop to edit</div>
+    </div>
+    <div id="ladder">
+      <div id="ladResize" title="Drag to resize"></div>
+      <div class="ladbar">
+        <b>PLC Ladder</b>
+        <div id="ladTools"></div>
+        <label>Address <input id="ladAddr" value="I0.0" size="6" title="I0.0–I0.7 inputs, Q0.0–Q0.5 outputs, M0.. memory, T0.. timers, C0.. counters"></label>
+        <label>Preset <input id="ladPre" type="number" value="5" style="width:56px" title="Timer seconds / counter count"></label>
+        <button id="ladAddRung">+ Rung</button>
+        <button id="ladSymbols" title="Give names to addresses">🏷 Symbols</button>
+        <span class="muted small">Click cell = place tool · Right-click = edit address</span>
+      </div>
+      <div class="ladbody">
+        <div class="ladscroll"><svg id="ladderSvg"></svg></div>
+        <div id="ioTable"></div>
+      </div>
+    </div>
+  </section>
+  <aside id="right">
+    <div class="rhead">Properties</div>
+    <div id="props"></div>
+    <div class="rhead">Faults & Messages <button id="btnClearAl" class="mini">clear</button></div>
+    <div id="alarms"></div>
+    <div class="rhead">Wire colours (simulation)</div>
+    <div class="legend">
+      <span><i style="background:#e53935"></i>R / L</span><span><i style="background:#e0a800"></i>Y</span><span><i style="background:#1e6fe0"></i>B</span>
+      <span><i style="background:#546e7a"></i>N</span><span><i style="background:#c2185b"></i>+24V</span><span><i style="background:#3949ab"></i>0V</span>
+      <span><i style="background:#b0bec5"></i>Dead</span><span><i style="background:#ff00ff"></i>Short</span>
+    </div>
+  </aside>
+</main>
+<footer id="status"></footer>
+<div id="toast"></div>
+
+<script src="js/components.js"></script>
+<script src="js/ladder.js"></script>
+<script src="js/sim.js"></script>
+<script src="js/examples.js"></script>
+<script src="js/editor.js"></script>
+</body>
+</html>
